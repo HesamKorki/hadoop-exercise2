@@ -1,0 +1,24 @@
+Prerequisite for running the code (Python):
+Please create a virtualenv and install the libraries recorded in requirements.txt:
+
+$ python3 -m venv env
+$ source env/bin/activate
+(env)$ pip install -r requirements.txt
+
+Then you can run the code as a binary or with python interpreter:
+$ python problem_1.py 
+
+
+(a)
+The function "create_large_random_file()" is responsible for creating the large file 
+of records in the desired format (gender, age, country) with random integers. We used 
+the csv format and added a header to be reproducible.
+
+(b)
+The function "median_age" is the actual implementation of the algorithm and the 
+"read_csv" generator is used to efficiently read the file into memory.
+
+(c)
+The scalability test is done in the main part of the script and a plotting is done 
+to verify that the complexity of the algorithm is actualy linear. The picture is 
+available by the name "problem_1(c).png"
