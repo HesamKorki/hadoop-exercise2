@@ -1,0 +1,70 @@
+(a)
+We only need to change the pattern of tokenizer to split on "\t"
+-------------------------------------------------------------------
+(b)
+In the tokenizer we need to remove the loop and only set the tokens[1] 
+from each line in the mapper because the primaryName of the actors appears 
+in the second column of `name.basics.tsv`. Then we deployed the code with hadoop:
+
+$ hadoop jar WordCount.jar WordCount name.basics.tsv ./out3bActors
+
+Then we checked the result with the following command:
+
+$ cat part-r-00000 | sort -t$'\t' -k2,2nr | head -n 10
+Alex	447
+Michael Smith	416
+Chris	408
+David Smith	405
+Michael	404
+David	396
+Mike	370
+John	366
+Michael Johnson	349
+Chris Smith	341
+
+For the movie titles, it's the same unless the primaryName of a movie comes in the 
+third column of the `title.basics.tsv` Which is commented out in the WordCount.java
+Then we deployed the code with hadoop:
+
+$ hadoop jar WordCount.jar WordCount title.basics.tsv ./out3bMovies
+
+Then we checked the result with the following command:
+
+$ cat part-r-00000 | sort -t$'\t' -k2,2nr | head -n 10
+
+Episode #1.1	49706
+Episode #1.2	44953
+Episode #1.3	42564
+Episode #1.4	39433
+Episode #1.5	36110
+Episode #1.6	34115
+Episode #1.7	29682
+Episode #1.8	28459
+Episode #1.9	24981
+Episode #1.10	24028
+----------------------------------------------------------------
+(c)
+To solve this question we wrote the file `ActorFrequency.java` which is inspired from the 
+WordCount example. It consists of two mapreduce jobs. This is a reduce side implemetation 
+of a join. The first mapper counts the number of times an actor_id appeared in the principals 
+and emits the (actor_id, frequency) as the result of the reducer to a temp-output which then is 
+used as the second input to the joinReducer. This reducer also takes (actor_id, actor_name) pairs
+from the ActorNameMapper and joins them. 
+
+After compiling the code we ran it with the following command:
+$ hadoop jar ActorFrequency.jar ActorFrequency ~/title.principals.tsv ~/name.basics.tsv ./outAc
+
+Then we checked the result with the following command:
+
+$ cat part-r-00000 | sort -t$'\t' -k2,2nr | head -n 10
+
+nm0914844	24512	Reg Watson
+nm0251041	22545	Michael Egizi
+nm6352729	21222	Leena Gangopadhyay
+nm0934807	20660	Roy Winsor
+nm0438471	18619	Ekta Kapoor
+nm0596393	16911	John de Mol
+nm0633202	16535	Agnes Nixon
+nm0438506	15178	Shobha Kapoor
+nm8467983	14791	Saibal Banerjee
+nm0022172	13548	Ernesto Alonso
