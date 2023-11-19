@@ -6,7 +6,10 @@ $ source env/bin/activate
 (env)$ pip install -r requirements.txt
 
 Then you can run the code as a binary or with python interpreter:
-$ python problem_1.py 
+(env)$ python problem_1.py 
+
+or as a executable:
+$ ./problem_1.py
 
 
 (a)
