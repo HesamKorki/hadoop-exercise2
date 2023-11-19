@@ -13,12 +13,37 @@ $ python problem_1.py
 The function "create_large_random_file()" is responsible for creating the large file 
 of records in the desired format (gender, age, country) with random integers. We used 
 the csv format and added a header to be reproducible.
-
+-------------------------------------------------------
 (b)
 The function "median_age" is the actual implementation of the algorithm and the 
 "read_csv" generator is used to efficiently read the file into memory.
-
+-------------------------------------------------------
 (c)
 The scalability test is done in the main part of the script and a plotting is done 
 to verify that the complexity of the algorithm is actualy linear. The picture is 
 available by the name "problem_1(c).png"
+-------------------------------------------------------
+(d)
+In my opinion this task has two major parts: first the part that reads the file and 
+creates a 3D object in the memory, then the second part which finds the median per group of 
+(gender, country) which are 2*192=384 groups. 
+
+The first part of the program is not paralizable because the whole file should be sequentially 
+read to create the 3D object. (This is a basic interpretation, there are techniques
+in distributed systems to read chunks of the file on each node and get a very good 
+approximation of the final median). However, the second part of the task is totally 
+paralizable up to the number of groups.
+
+I added a timer to compute the actual time it takes to read the file to find the proportion of 
+the sequential part of the task and it's almost: 99.9%
+As a result (parallel proportion of a task) 𝑃 = 0.001
+
+
+Amdahl the "overall performance improvement gained by optimizing a single part of a system 
+is limited by the fraction of time that the improved part is actually used"
+which in our case would be 0.1% of the task. Using Amdahl formula for infinite number of 
+CPUs, this task's speedup is capped at: 1.001
+
+Gustafson believed that a problem that is sufficiently large can also be parallelized efficiently.
+Which in our task means that if we use 1000 CPUs, the speedup would be 1.999 and linearly increasing 
+with the number of CPUs.

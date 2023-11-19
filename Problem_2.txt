@@ -1,0 +1,151 @@
+(a)
+Using the guide on Moodle, we were able to connect to the HPC move the code and Wikipedia Articles.
+Then compile the WordCount.java and make a jar out of it to then deploy via hadoop:
+
+$ hadoop jar WordCount.jar WordCount ~/Wikipedia-En-41784-Articles/AA/ ~/hadoop-output-directory
+
+Then we made the modifications to tokenizer of the WordCount.java file which is included here to 
+lower case the lines and split on non-word-non-digit characters which resulted in better outcome
+--------------------------------------------------------
+(b)
+>> to get the execution time 
+time hadoop jar WordCount.jar WordCount ~/Wikipedia-En-41784-Articles/AA/ ~/hadoop-output-directory
+
+>> another way of running
+time hadoop jar WordCount.jar WordCount ~/Wikipedia-En-41784-Articles/A[AB]/ ~/hadoop-output-directory
+time hadoop jar WordCount.jar WordCount ~/Wikipedia-En-41784-Articles/A*/ ~/hadoop-output-directory
+
+cd Wikipedia-En-41784-Articles
+>> showing all sub folders
+ls A* 
+
+>>>>>> RESULT (b)
+sub folder 'AA'
+real    0m28.301s
+user    0m20.163s
+sys     0m1.178s
+
+sub folders 'AA' 'AB'
+real    0m39.751s
+user    0m35.138s
+sys     0m1.764s
+
+sub folders 'AA' 'AB' 'AC'
+real    0m55.706s
+user    0m50.685s
+sys     0m2.389s
+
+sub folders 'AA' 'AB' 'AC' 'AD'
+real    1m12.995s
+user    1m7.040s
+sys     0m2.877s
+
+sub folders 'AA' 'AB' 'AC' 'AD' 'AE'
+real    1m49.877s
+user    1m32.238s
+sys     0m3.560s
+
+sub folders 'AA' 'AB' 'AC' 'AD' 'AE' 'AF'
+real    1m57.493s
+user    1m49.454s
+sys     0m4.161s
+
+sub folders 'AA' 'AB' 'AC' 'AD' 'AE' 'AF' 'AG'
+real    2m16.622s
+user    2m9.103s
+sys     0m4.730s
+
+sub folders 'AA' 'AB' 'AC' 'AD' 'AE' 'AF' 'AG' 'AH'
+real    2m32.094s
+user    2m23.647s
+sys     0m5.156s
+
+sub folders 'AA' 'AB' 'AC' 'AD' 'AE' 'AF' 'AG' 'AH' 'AI'
+real    2m51.593s
+user    2m42.341s
+sys     0m5.621s
+
+sub folders 'AA' 'AB' 'AC' 'AD' 'AE' 'AF' 'AG' 'AH' 'AI' 'AJ'
+real    3m10.680s
+user    3m1.244s
+sys     0m6.170s
+
+sub folders 'AA' 'AB' 'AC' 'AD' 'AE' 'AF' 'AG' 'AH' 'AI' 'AJ' 'AK'
+real    3m15.774s
+user    3m7.146s
+sys     0m6.231s
+...
+--------------------------------------------------------------
+(c)
+We just need to modify the reducer as it is shown in the WordCount.java to only record 
+the keys that have the sum of more than 10,0000:
+
+>>>>>> RESULT (c)
+real    0m23.704s
+user    0m22.199s
+sys     0m1.056s
+
+>> after running the following command
+cat ~/hadoop-output-directory/part-r-*
+
+.       32233
+a       160365
+after   12228
+all     12325
+also    20376
+an      31842
+and     235201
+are     40307
+as      74542
+at      30929
+be      29764
+been    15123
+but     17733
+by      58967
+can     12193
+first   15633
+for     61831
+from    40153
+had     18203
+has     20298
+have    21613
+he      26493
+his     32473
+in      211158
+into    11115
+is      85200
+it      35163
+its     17830
+many    10669
+may     10189
+more    12986
+most    13117
+new     11201
+not     20830
+of      298350
+on      48996
+one     17686
+only    10077
+or      32949
+other   16385
+s       48724
+some    13217
+such    13945
+than    10628
+that    58293
+the     583662
+their   17895
+there   10999
+these   10592
+they    15101
+this    25904
+to      171330
+two     12703
+used    12087
+was     67299
+were    26338
+when    10972
+which   30262
+who     11920
+with    55522
+

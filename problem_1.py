@@ -34,11 +34,15 @@ def median_age(file_name, n):
     array_3d = np.zeros((2, 128, 192))
     index = 0
     result = {}
+    start_read = timer()
     for row in read_csv(file_name):
         if index == n:
             break
         array_3d[int(row[0]), int(row[1]), int(row[2])] += 1
         index += 1
+    end_read = timer()
+    print("Time taken to read: {} seconds".format(end_read - start_read))
+
     for i in range(2):
         for k in range(192):
             tot = sum(array_3d[i, :, k])
@@ -64,7 +68,7 @@ if __name__ == '__main__':
         median_age(file_name, n)
         end = timer()
         elapsed_time.append(end - start)
-        print("Time taken: {} seconds".format(end - start))
+        print("Time taken for the whole task: {} seconds".format(end - start))
 
     #plot
 
